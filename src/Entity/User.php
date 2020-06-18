@@ -40,6 +40,16 @@ class User implements UserInterface
      */
     private $name;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Teacher::class, mappedBy="user_id", cascade={"persist", "remove"})
+     */
+    private $teacher;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Student::class, mappedBy="user_id", cascade={"persist", "remove"})
+     */
+    private $student;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -126,6 +136,40 @@ class User implements UserInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getTeacher(): ?Teacher
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(Teacher $teacher): self
+    {
+        $this->teacher = $teacher;
+
+        // set the owning side of the relation if necessary
+        if ($teacher->getUserId() !== $this) {
+            $teacher->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function setStudent(Student $student): self
+    {
+        $this->student = $student;
+
+        // set the owning side of the relation if necessary
+        if ($student->getUserId() !== $this) {
+            $student->setUserId($this);
+        }
 
         return $this;
     }

@@ -1,5 +1,9 @@
 doctrine:
     dbal:
+        types:
+            eventType: App\Enum\EventType
+        mapping_types:
+            eventType: string
         url: '%env(resolve:DATABASE_URL)%'
 
         # IMPORTANT: You MUST configure your server version,
