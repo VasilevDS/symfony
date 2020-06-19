@@ -28,7 +28,7 @@ class Event
     private $date_to;
 
     /**
-     * @ORM\Column(type="eventType", length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $type;
 

@@ -4,8 +4,15 @@
 namespace App\Enum;
 
 
-class EventType extends EnumType
+use Fresh\DoctrineEnumBundle\DBAL\Types\AbstractEnumType;
+
+class EventType extends AbstractEnumType
 {
-    protected $name = 'eventType';
-    protected $values = array('FREETIME', 'LESSON');
+    const FREETIME = 'FREETIME';
+    const LESSON = 'LESSON';
+
+    protected static $choices = [
+        self::FREETIME => 'FREETIME',
+        self::LESSON => 'LESSON',
+    ];
 }

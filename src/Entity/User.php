@@ -150,8 +150,8 @@ class User implements UserInterface
         $this->teacher = $teacher;
 
         // set the owning side of the relation if necessary
-        if ($teacher->getUserId() !== $this) {
-            $teacher->setUserId($this);
+        if ($teacher->getUser() !== $this) {
+            $teacher->setUser($this);
         }
 
         return $this;
@@ -167,8 +167,8 @@ class User implements UserInterface
         $this->student = $student;
 
         // set the owning side of the relation if necessary
-        if ($student->getUserId() !== $this) {
-            $student->setUserId($this);
+        if ($student->getUser() !== $this) {
+            $student->setUser($this);
         }
 
         return $this;

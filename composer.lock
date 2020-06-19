@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "654e80c9004c18f27b51b861e11c96df",
+    "content-hash": "796820d905c3dacea9678199ab153205",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1445,6 +1445,98 @@
                 "validator"
             ],
             "time": "2020-06-16T20:11:17+00:00"
+        },
+        {
+            "name": "fresh/doctrine-enum-bundle",
+            "version": "v7.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fre5h/DoctrineEnumBundle.git",
+                "reference": "71f7eaa3f10a778dfe9dedfe1f23139035ce4fd7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fre5h/DoctrineEnumBundle/zipball/71f7eaa3f10a778dfe9dedfe1f23139035ce4fd7",
+                "reference": "71f7eaa3f10a778dfe9dedfe1f23139035ce4fd7",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": "^2.11 || ^3.0",
+                "doctrine/doctrine-bundle": "^2.1",
+                "doctrine/orm": "^2.7",
+                "php": ">=7.2.5",
+                "symfony/config": "^5.0",
+                "symfony/dependency-injection": "^5.0",
+                "symfony/doctrine-bridge": "^5.0",
+                "symfony/framework-bundle": "^5.0",
+                "symfony/http-kernel": "^5.0",
+                "symfony/validator": "^5.0",
+                "twig/twig": "^3.0"
+            },
+            "require-dev": {
+                "escapestudios/symfony2-coding-standard": "^3.11",
+                "johnkary/phpunit-speedtrap": "^3.2",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-doctrine": "^0.12",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpstan/phpstan-symfony": "^0.12",
+                "phpunit/phpunit": "^8.5",
+                "slam/phpstan-extensions": "^4.0",
+                "symfony/form": "^5.0",
+                "symfony/yaml": "^5.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fresh\\DoctrineEnumBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Artem Henvald",
+                    "email": "genvaldartem@gmail.com",
+                    "role": "Creator"
+                },
+                {
+                    "name": "Community",
+                    "homepage": "https://github.com/fre5h/DoctrineEnumBundle/graphs/contributors",
+                    "role": "Contributors"
+                }
+            ],
+            "description": "Provides support of ENUM type for Doctrine2 in Symfony applications.",
+            "homepage": "https://github.com/fre5h/DoctrineEnumBundle",
+            "keywords": [
+                "bundle",
+                "dbal",
+                "doctrine",
+                "entity",
+                "enum",
+                "mssql",
+                "mysql",
+                "postgresql",
+                "sqlite",
+                "symfony",
+                "type"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/fre5h",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-05-31T08:58:48+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -8158,7 +8250,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.2.5",
+        "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
