@@ -41,12 +41,12 @@ class User implements UserInterface
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity=Teacher::class, mappedBy="user_id", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Teacher::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $teacher;
 
     /**
-     * @ORM\OneToOne(targetEntity=Student::class, mappedBy="user_id", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Student::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $student;
 

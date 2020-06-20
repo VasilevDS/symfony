@@ -5,7 +5,7 @@ namespace App\DTO;
 
 use App\Enum\RoleType;
 
-class TeacherDTO
+class TeacherDTO implements UserDTOInterface
 {
     private String $name;
     private String $email;

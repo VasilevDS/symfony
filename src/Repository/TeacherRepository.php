@@ -1,13 +1,13 @@
-<?php
+<?php /** @noinspection PhpDocSignatureInspection */
 
 namespace App\Repository;
 
 use App\DTO\TeacherDTO;
 use App\Entity\Teacher;
-use App\Entity\User;
 use App\Resource\TeacherResource;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,23 +19,19 @@ use Doctrine\Persistence\ManagerRegistry;
 class TeacherRepository extends ServiceEntityRepository
 {
     private EntityManagerInterface $manager;
+    private UserRepository $userRep;
 
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager, UserRepository $userRep)
     {
         parent::__construct($registry, Teacher::class);
         $this->manager = $manager;
+        $this->userRep = $userRep;
     }
 
     public function save(TeacherDTO $dto): array
     {
-        /** @var User $user */
-        $user = new User();
-        $user->setName($dto->getName())
-            ->setEmail($dto->getEmail())
-            ->setRoles($dto->getRoles())
-            ->setPassword($dto->getPassword());
+        $user = $this->userRep->createOrUpdateUser($dto);
 
-        /** @var Teacher $teacher */
         $teacher = new Teacher();
         $teacher->setUser($user);
 
@@ -47,15 +43,52 @@ class TeacherRepository extends ServiceEntityRepository
 
     public function findOneByIdJoinedToUser()
     {
-        //$entityManager = $this->getEntityManager();
-
         $query = $this->manager->createQuery(
             'SELECT t, u
         FROM App\Entity\Teacher t
-        //INNER JOIN t.user u'
+        INNER JOIN t.user u'
         );
-        dd($query->getSQL()); //
+
         return $query->execute();
+    }
+
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function update(int $idTeacher, TeacherDTO $dto): array
+    {
+        $teacher = $this->findOrFail($idTeacher);
+
+        $user = $this->userRep->createOrUpdateUser($dto);
+        $teacher->setUser($user);
+        $this->manager->persist($teacher);
+        $this->manager->flush();
+
+        return TeacherResource::toArray($teacher);
+    }
+
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function destroy(int $idTeacher): bool
+    {
+        $teacher = $this->findOrFail($idTeacher);
+        $this->manager->remove($teacher);
+        $this->manager->flush();
+
+        return true;
+    }
+
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function findOrFail(int $idTeacher): Teacher
+    {
+        $teacher = $this->find($idTeacher);
+        if($teacher === null) {
+            throw new EntityNotFoundException("teacher not found [id: $idTeacher]");
+        }
+        return $teacher;
     }
 
     // /**

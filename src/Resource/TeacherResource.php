@@ -8,7 +8,7 @@ use App\Entity\Teacher;
 
 class TeacherResource
 {
-    public static function toArray(Teacher $teacher)
+    public static function toArray(Teacher $teacher): array
     {
         return [
             'teacher_id' => $teacher->getId(),

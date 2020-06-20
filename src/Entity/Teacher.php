@@ -25,11 +25,7 @@ class Teacher
      */
     private $user;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Theme::class, mappedBy="teacher")
-     * @ORM\JoinTable(name="teachers_themes")
-     */
-    private $theme;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Freetime::class, mappedBy="teacher")
@@ -43,7 +39,6 @@ class Teacher
 
     public function __construct()
     {
-        $this->theme = new ArrayCollection();
         $this->freetimes = new ArrayCollection();
         $this->lessons = new ArrayCollection();
     }
@@ -65,33 +60,6 @@ class Teacher
         return $this;
     }
 
-    /**
-     * @return Collection|TeacherTheme[]
-     */
-    public function getTheme(): Collection
-    {
-        return $this->theme;
-    }
-
-    public function addTheme(TeacherTheme $theme): self
-    {
-        if (!$this->theme->contains($theme)) {
-            $this->theme[] = $theme;
-            $theme->addTeacher($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTheme(TeacherTheme $theme): self
-    {
-        if ($this->theme->contains($theme)) {
-            $this->theme->removeElement($theme);
-            $theme->removeTeacher($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Freetime[]
