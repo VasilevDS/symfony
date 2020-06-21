@@ -25,7 +25,14 @@ class Teacher
      */
     private $user;
 
-
+    /**
+     * @ORM\ManyToMany(targetEntity="Theme")
+     * @ORM\JoinTable(name="teacher_theme",
+     *     joinColumns={@ORM\JoinColumn(name="teacher_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="theme_id", referencedColumnName="id")}
+     *     )
+     */
+    private $themes;
 
     /**
      * @ORM\OneToMany(targetEntity=Freetime::class, mappedBy="teacher")
@@ -41,6 +48,7 @@ class Teacher
     {
         $this->freetimes = new ArrayCollection();
         $this->lessons = new ArrayCollection();
+        $this->themes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -60,6 +68,21 @@ class Teacher
         return $this;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getThemes(): ArrayCollection
+    {
+        return $this->themes;
+    }
+
+    /**
+     * @param ArrayCollection $themes
+     */
+    public function setThemes(ArrayCollection $themes): void
+    {
+        $this->themes = $themes;
+    }
 
     /**
      * @return Collection|Freetime[]

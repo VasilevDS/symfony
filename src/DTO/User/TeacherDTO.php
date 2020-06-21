@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\DTO;
+namespace App\DTO\User;
 
 use App\Enum\RoleType;
 
@@ -11,13 +11,15 @@ class TeacherDTO implements UserDTOInterface
     private String $email;
     private array $roles;
     private String $password;
+    private array $themes;
 
-    public function __construct(string $name, string $email, string $password)
+    public function __construct(string $name, string $email, string $password, array $themes)
     {
         $this->name = $name;
         $this->email = $email;
         $this->roles = [RoleType::TEACHER];
         $this->password = $password;
+        $this->themes = $themes;
     }
 
     /**
@@ -52,5 +54,12 @@ class TeacherDTO implements UserDTOInterface
         return $this->password;
     }
 
+    /**
+     * @return array
+     */
+    public function getThemes(): array
+    {
+        return $this->themes;
+    }
 
 }

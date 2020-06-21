@@ -1,26 +1,27 @@
 <?php /** @noinspection PhpDocSignatureInspection */
 
+
 namespace App\Controller;
 
-use App\DTO\User\TeacherDTO;
-use App\Service\TeacherService;
+
+use App\DTO\ThemeDTO;
+use App\Service\ThemeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TeacherController extends AbstractController
+class ThemeController extends AbstractController
 {
-    private TeacherService $service;
+    private ThemeService $service;
 
-    public function __construct(TeacherService $service)
+    public function __construct(ThemeService $service)
     {
         $this->service = $service;
     }
 
-
     /**
-     * @Route("/teacher", name="teacher", methods="GET")
+     * @Route("/theme", methods="GET")
      */
     public function index()
     {
@@ -29,19 +30,19 @@ class TeacherController extends AbstractController
     }
 
     /**
-     * @Route("/teacher", methods="POST")
+     * @Route("/theme", methods="POST")
      */
     public function store(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $dto = new TeacherDTO($data['name'],$data['email'],$data['password'],$data['themes']);
+        $dto = new ThemeDTO($data['name']);
         $result = $this->service->add($dto);
 
         return new JsonResponse($result);
     }
 
     /**
-     * @Route("/teacher/{id}", methods="GET")
+     * @Route("/theme/{id}", methods="GET")
      */
     public function show(int $id)
     {
@@ -50,23 +51,24 @@ class TeacherController extends AbstractController
     }
 
     /**
-     * @Route("/teacher/{id}", methods="PUT")
+     * @Route("/theme/{id}", methods="PUT")
      */
     public function update(Request $request, int $id)
     {
         $data = json_decode($request->getContent(), true);
-        $dto = new TeacherDTO($data['name'],$data['email'],$data['password'],$data['themes']);
+        $dto = new ThemeDTO($data['name']);
         $result = $this->service->update($id, $dto);
 
         return new JsonResponse($result);
     }
 
     /**
-     * @Route("/teacher/{id}", methods="DELETE")
+     * @Route("/theme/{id}", methods="DELETE")
      */
     public function destroy(int $id)
     {
         $result = $this->service->remove($id);
         return new JsonResponse($result);
     }
+
 }

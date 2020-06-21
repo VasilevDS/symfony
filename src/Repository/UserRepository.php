@@ -2,14 +2,9 @@
 
 namespace App\Repository;
 
-use App\DTO\UserDTOInterface;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,45 +12,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository
 {
-    private UserPasswordEncoderInterface $encoder;
 
-    public function __construct(ManagerRegistry $registry, UserPasswordEncoderInterface $encoder)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
-        $this->encoder = $encoder;
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
-    {
-        if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
-        }
-
-        $user->setPassword($newEncodedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
-    }
-
-    public function createEntityPassword(UserInterface $user, string $password): string
-    {
-        return $this->encoder->encodePassword($user, $password);
-    }
-
-    public function createOrUpdateUser(UserDTOInterface $dto, UserInterface $user = null): User
-    {
-        $user = $user===null ? new User() : $user;
-        $user->setName($dto->getName())
-            ->setEmail($dto->getEmail())
-            ->setRoles($dto->getRoles())
-            ->setPassword($this->createEntityPassword($user, $dto->getPassword()));
-
-        return $user;
-    }
 
     // /**
     //  * @return User[] Returns an array of User objects

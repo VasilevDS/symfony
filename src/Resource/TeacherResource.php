@@ -15,6 +15,7 @@ class TeacherResource
             'user_id' => $teacher->getUser()->getId(),
             'name' => $teacher->getUser()->getName(),
             'email' => $teacher->getUser()->getEmail(),
+            //'themes' => $teacher->getThemes(),
             'role' => $teacher->getUser()->getRoles(),
         ];
     }
