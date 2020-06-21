@@ -35,8 +35,8 @@ class FreetimeService
     {
         $freetimes = $this->repository->findAll();
         $data = [];
-        foreach ($freetimes as $theme) {
-            $data[] = FreetimeResource::toArray($theme);
+        foreach ($freetimes as $freetime) {
+            $data[] = FreetimeResource::toArray($freetime);
         }
         return $data;
     }

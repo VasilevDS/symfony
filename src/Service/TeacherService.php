@@ -33,8 +33,8 @@ class TeacherService
     {
         $teachers = $this->repository->findAll();
         $data = [];
-        foreach ($teachers as $theme) {
-            $data[] = TeacherResource::toArray($theme);
+        foreach ($teachers as $teacher) {
+            $data[] = TeacherResource::toArray($teacher);
         }
         return $data;
     }
