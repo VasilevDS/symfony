@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,24 +38,24 @@ class Event
         return $this->id;
     }
 
-    public function getDateFrom(): ?\DateTimeImmutable
+    public function getDateFrom(): ?DateTime
     {
         return $this->dateFrom;
     }
 
-    public function setDateFrom(\DateTimeImmutable $dateFrom): self
+    public function setDateFrom(DateTime $dateFrom): self
     {
         $this->dateFrom = $dateFrom;
 
         return $this;
     }
 
-    public function getDateTo(): ?\DateTimeImmutable
+    public function getDateTo(): ?DateTime
     {
         return $this->dateTo;
     }
 
-    public function setDateTo(\DateTimeImmutable $dateTo): self
+    public function setDateTo(DateTime $dateTo): self
     {
         $this->dateTo = $dateTo;
 
