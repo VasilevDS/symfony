@@ -31,9 +31,9 @@ class TeacherService
 
     public function getAll(): array
     {
-        $themes = $this->repository->findAll();
+        $teachers = $this->repository->findAll();
         $data = [];
-        foreach ($themes as $theme) {
+        foreach ($teachers as $theme) {
             $data[] = TeacherResource::toArray($theme);
         }
         return $data;
