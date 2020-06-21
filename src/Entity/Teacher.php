@@ -25,14 +25,6 @@ class Teacher
      */
     private $user;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Theme")
-     * @ORM\JoinTable(name="teacher_theme",
-     *     joinColumns={@ORM\JoinColumn(name="teacher_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="theme_id", referencedColumnName="id")}
-     *     )
-     */
-    private $themes;
 
     /**
      * @ORM\OneToMany(targetEntity=Freetime::class, mappedBy="teacher")
@@ -43,6 +35,12 @@ class Teacher
      * @ORM\OneToMany(targetEntity=Lesson::class, mappedBy="teacher")
      */
     private $lessons;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Theme::class, inversedBy="teachers")
+     */
+    private $themes;
+
 
     public function __construct()
     {
@@ -66,22 +64,6 @@ class Teacher
         $this->user = $user;
 
         return $this;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getThemes(): ArrayCollection
-    {
-        return $this->themes;
-    }
-
-    /**
-     * @param ArrayCollection $themes
-     */
-    public function setThemes(ArrayCollection $themes): void
-    {
-        $this->themes = $themes;
     }
 
     /**
@@ -145,4 +127,31 @@ class Teacher
 
         return $this;
     }
+
+    /**
+     * @return Collection|Theme[]
+     */
+    public function getThemes(): Collection
+    {
+        return $this->themes;
+    }
+
+    public function addTheme(Theme $theme): self
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes[] = $theme;
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): self
+    {
+        if ($this->themes->contains($theme)) {
+            $this->themes->removeElement($theme);
+        }
+
+        return $this;
+    }
+
 }

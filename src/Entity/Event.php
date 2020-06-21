@@ -20,12 +20,12 @@ class Event
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date_from;
+    private $dateFrom;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date_to;
+    private $dateTo;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -37,26 +37,26 @@ class Event
         return $this->id;
     }
 
-    public function getDateFrom(): ?\DateTimeInterface
+    public function getDateFrom(): ?\DateTimeImmutable
     {
-        return $this->date_from;
+        return $this->dateFrom;
     }
 
-    public function setDateFrom(\DateTimeInterface $date_from): self
+    public function setDateFrom(\DateTimeImmutable $dateFrom): self
     {
-        $this->date_from = $date_from;
+        $this->dateFrom = $dateFrom;
 
         return $this;
     }
 
-    public function getDateTo(): ?\DateTimeInterface
+    public function getDateTo(): ?\DateTimeImmutable
     {
-        return $this->date_to;
+        return $this->dateTo;
     }
 
-    public function setDateTo(\DateTimeInterface $date_to): self
+    public function setDateTo(\DateTimeImmutable $dateTo): self
     {
-        $this->date_to = $date_to;
+        $this->dateTo = $dateTo;
 
         return $this;
     }

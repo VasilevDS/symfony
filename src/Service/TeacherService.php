@@ -7,6 +7,7 @@ namespace App\Service;
 use App\DTO\User\TeacherDTO;
 use App\Entity\Teacher;
 use App\Repository\TeacherRepository;
+use App\Repository\ThemeRepository;
 use App\Resource\TeacherResource;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -15,14 +16,17 @@ class TeacherService
     private EntityManagerInterface $manager;
     private TeacherRepository $repository;
     private UserService $userService;
+    private ThemeRepository $themeRepository;
 
     public function __construct(EntityManagerInterface $manager,
                                 TeacherRepository $repository,
+                                ThemeRepository $themeRepository,
                                 UserService $userService)
     {
         $this->manager = $manager;
         $this->repository = $repository;
         $this->userService = $userService;
+        $this->themeRepository = $themeRepository;
     }
 
     public function getAll(): array
@@ -40,6 +44,11 @@ class TeacherService
         $user = $this->userService->createOrUpdate($DTO);
         $teacher = new Teacher();
         $teacher->setUser($user);
+        foreach ($DTO->getThemes() as $idTheme)
+        {
+            $theme = $this->themeRepository->find($idTheme);
+            $teacher->addTheme($theme);
+        }
 
         $this->manager->persist($teacher);
         $this->manager->flush();
@@ -53,6 +62,7 @@ class TeacherService
         if ($teacher === null) {
             return ['error' => "teacher not found [id: $id]"];
         }
+
         return TeacherResource::toArray($teacher);
     }
 
@@ -65,7 +75,13 @@ class TeacherService
         $user = $teacher->getUser();
         $user = $this->userService->createOrUpdate($DTO, $user);
         $teacher->setUser($user);
-        //$teacher->setThemes($DTO->getThemes());
+        $teacher->getThemes()->clear();
+        foreach ($DTO->getThemes() as $idTheme)
+        {
+            $theme = $this->themeRepository->find($idTheme);
+            $teacher->addTheme($theme);
+        }
+
         $this->manager->persist($teacher);
         $this->manager->flush();
 

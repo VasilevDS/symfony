@@ -27,11 +27,13 @@ class Theme
     /**
      * @ORM\ManyToMany(targetEntity=Teacher::class, mappedBy="themes")
      */
-    private $teacher;
+    private $teachers;
+
+
 
     public function __construct()
     {
-        $this->teacher = new ArrayCollection();
+        $this->teachers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -54,15 +56,15 @@ class Theme
     /**
      * @return Collection|Teacher[]
      */
-    public function getTeacher(): Collection
+    public function getTeachers(): Collection
     {
-        return $this->teacher;
+        return $this->teachers;
     }
 
     public function addTeacher(Teacher $teacher): self
     {
-        if (!$this->teacher->contains($teacher)) {
-            $this->teacher[] = $teacher;
+        if (!$this->teachers->contains($teacher)) {
+            $this->teachers[] = $teacher;
             $teacher->addTheme($this);
         }
 
@@ -71,8 +73,8 @@ class Theme
 
     public function removeTeacher(Teacher $teacher): self
     {
-        if ($this->teacher->contains($teacher)) {
-            $this->teacher->removeElement($teacher);
+        if ($this->teachers->contains($teacher)) {
+            $this->teachers->removeElement($teacher);
             $teacher->removeTheme($this);
         }
 
