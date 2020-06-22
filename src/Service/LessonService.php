@@ -45,7 +45,7 @@ class LessonService
 
     public function getAll(): array
     {
-        $lessons = $this->repository->findAll();
+        $lessons = $this->repository->findAllByIdJoinedToAllRelation();
         $data = [];
         foreach ($lessons as $lesson) {
             $data[] = LessonResource::toArray($lesson);
@@ -77,7 +77,7 @@ class LessonService
 
     public function get(int $id): array
     {
-        $lesson = $this->repository->find($id);
+        $lesson = $this->repository->findOneByIdJoinedToEventAndTeacher($id);
         if ($lesson === null) {
             return ['error' => "lesson not found [id: $id]"];
         }
@@ -87,7 +87,7 @@ class LessonService
 
     public function update(int $id, LessonDTO $DTO): array
     {
-        $lesson = $this->repository->find($id);
+        $lesson = $this->repository->findOneByIdJoinedToEventAndTeacher($id);
         if ($lesson === null) {
             return ['error' => "lesson not found [id: $id]"];
         }

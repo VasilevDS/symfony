@@ -36,7 +36,7 @@ class Lesson
     private $theme;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Event::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Event::class, cascade={"remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;

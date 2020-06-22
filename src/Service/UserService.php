@@ -33,6 +33,7 @@ class UserService
             ->setRoles($DTO->getRoles())
             ->setPassword($this->encoder->encodePassword($user, $DTO->getPassword()));
 
+        $this->manager->persist($user);
         return $user;
     }
 }

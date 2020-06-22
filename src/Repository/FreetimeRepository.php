@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Freetime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +21,35 @@ class FreetimeRepository extends ServiceEntityRepository
         parent::__construct($registry, Freetime::class);
     }
 
-    // /**
-    //  * @return Freetime[] Returns an array of Freetime objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllByIdJoinedToEventAndTeacher()
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT f, e, t, u
+            FROM App\Entity\Freetime f
+            INNER JOIN f.event e
+            INNER JOIN f.teacher t
+            INNER JOIN t.user u'
+        );
+        return $query->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Freetime
+    public function findOneByIdJoinedToEventAndTeacher(int $id)
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT f, e, t, u
+            FROM App\Entity\Freetime f
+            INNER JOIN f.event e
+            INNER JOIN f.teacher t
+            INNER JOIN t.user u
+            WHERE f.id = :id'
+        )->setParameter('id', $id);
+
+        try {
+            return $query->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
-    */
 }

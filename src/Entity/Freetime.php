@@ -26,7 +26,7 @@ class Freetime
     private $teacher;
 
     /**
-     * @ORM\OneToOne(targetEntity=Event::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Event::class, cascade={"remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;

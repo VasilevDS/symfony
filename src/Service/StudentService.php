@@ -27,7 +27,7 @@ class StudentService
 
     public function getAll(): array
     {
-        $students = $this->repository->findAll();
+        $students = $this->repository->findAllByIdJoinedToUser();
         $data = [];
         foreach ($students as $student) {
             $data[] = StudentResource::toArray($student);
@@ -49,7 +49,7 @@ class StudentService
 
     public function get(int $id): array
     {
-        $student = $this->repository->find($id);
+        $student = $this->repository->findOneByIdJoinedToUser($id);
         if ($student === null) {
             return ['error' => "student not found [id: $id]"];
         }
@@ -59,7 +59,7 @@ class StudentService
 
     public function update(int $id, StudentDTO $DTO): array
     {
-        $student = $this->repository->find($id);
+        $student = $this->repository->findOneByIdJoinedToUser($id);
         if ($student === null) {
             return ['error' => "student not found [id: $id]"];
         }

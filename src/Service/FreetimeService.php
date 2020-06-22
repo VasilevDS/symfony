@@ -33,7 +33,7 @@ class FreetimeService
 
     public function getAll(): array
     {
-        $freetimes = $this->repository->findAll();
+        $freetimes = $this->repository->findAllByIdJoinedToEventAndTeacher();
         $data = [];
         foreach ($freetimes as $freetime) {
             $data[] = FreetimeResource::toArray($freetime);
@@ -63,7 +63,7 @@ class FreetimeService
 
     public function get(int $id): array
     {
-        $freetime = $this->repository->find($id);
+        $freetime = $this->repository->findOneByIdJoinedToEventAndTeacher($id);
         if ($freetime === null) {
             return ['error' => "freetime not found [id: $id]"];
         }
@@ -73,7 +73,7 @@ class FreetimeService
 
     public function update(int $id, FreetimeDTO $DTO)
     {
-        $freetime = $this->repository->find($id);
+        $freetime = $this->repository->findOneByIdJoinedToEventAndTeacher($id);
         if ($freetime === null) {
             return ['error' => "freetime not found [id: $id]"];
         }

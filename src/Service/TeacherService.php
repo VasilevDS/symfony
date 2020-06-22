@@ -31,7 +31,7 @@ class TeacherService
 
     public function getAll(): array
     {
-        $teachers = $this->repository->findAll();
+        $teachers = $this->repository->findAllByIdJoinedToUser();
         $data = [];
         foreach ($teachers as $teacher) {
             $data[] = TeacherResource::toArray($teacher);
@@ -58,7 +58,7 @@ class TeacherService
 
     public function get(int $id): array
     {
-        $teacher = $this->repository->find($id);
+        $teacher = $this->repository->findOneByIdJoinedToUser($id);
         if ($teacher === null) {
             return ['error' => "teacher not found [id: $id]"];
         }
@@ -68,7 +68,7 @@ class TeacherService
 
     public function update(int $id, TeacherDTO $DTO): array
     {
-        $teacher = $this->repository->find($id);
+        $teacher = $this->repository->findOneByIdJoinedToUser($id);
         if ($teacher === null) {
             return ['error' => "teacher not found [id: $id]"];
         }

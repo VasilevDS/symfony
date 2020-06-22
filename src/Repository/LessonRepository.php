@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Lesson;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +21,37 @@ class LessonRepository extends ServiceEntityRepository
         parent::__construct($registry, Lesson::class);
     }
 
-    // /**
-    //  * @return Lesson[] Returns an array of Lesson objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllByIdJoinedToAllRelation()
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT l, e, th, t, s
+            FROM App\Entity\Lesson l
+            INNER JOIN l.event e
+            INNER JOIN l.theme th
+            INNER JOIN l.teacher t
+            INNER JOIN l.student s'
+        );
+        return $query->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Lesson
+    public function findOneByIdJoinedToEventAndTeacher(int $id)
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT l, e, th, t, s
+            FROM App\Entity\Lesson l
+            INNER JOIN l.event e
+            INNER JOIN l.theme th
+            INNER JOIN l.teacher t
+            INNER JOIN l.student s
+            WHERE l.id = :id'
+        )->setParameter('id', $id);
+
+        try {
+            return $query->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
-    */
 }

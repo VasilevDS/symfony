@@ -20,7 +20,7 @@ class Student
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="student", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="student", cascade={"remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

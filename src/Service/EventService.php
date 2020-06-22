@@ -27,6 +27,7 @@ class EventService
               ->setDateTo($DTO->getDateTo())
               ->setType($DTO->getType());
 
+        $this->manager->persist($event);
         return $event;
     }
 }
