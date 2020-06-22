@@ -9,6 +9,7 @@ use App\Entity\Freetime;
 use App\Repository\FreetimeRepository;
 use App\Repository\TeacherRepository;
 use App\Resource\FreetimeResource;
+use App\Validation\ValidatorService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class FreetimeService
@@ -17,11 +18,13 @@ class FreetimeService
     private FreetimeRepository $repository;
     private EventService $eventService;
     private TeacherRepository $teacherRepository;
+    private ValidatorService $validator;
 
     public function __construct(
         EntityManagerInterface $manager,
         FreetimeRepository $repository,
         EventService $eventService,
+        ValidatorService $validator,
         TeacherRepository $teacherRepository
     )
     {
@@ -29,6 +32,7 @@ class FreetimeService
         $this->repository = $repository;
         $this->eventService = $eventService;
         $this->teacherRepository = $teacherRepository;
+        $this->validator = $validator;
     }
 
     public function getAll(): array
@@ -43,6 +47,25 @@ class FreetimeService
 
     public function add(FreetimeDTO $DTO): array
     {
+        $this->validator->dateFromNoEarlierToday->setParam($DTO->getDateFrom());
+        $this->validator->dateFromNoLaterThanDateTo->setParam($DTO->getDateFrom(), $DTO->getDateTo());
+        $this->validator->dateRangeIntersectedFreetimes->setParam(
+            $DTO->getIdTeacher(),
+            $DTO->getDateFrom(),
+            $DTO->getDateTo()
+        );
+
+        $this->validator->addRules(
+            $this->validator->dateFromNoEarlierToday,
+            $this->validator->dateFromNoLaterThanDateTo,
+            $this->validator->dateRangeIntersectedFreetimes
+        );
+
+        $errors = $this->validator->validate();
+        if($errors !== []) {
+            return ['errors' => $errors];
+        }
+
         $event = $this->eventService->createOrUpdate($DTO);
 
         $teacher = $this->teacherRepository->find($DTO->getIdTeacher());

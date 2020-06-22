@@ -16,8 +16,8 @@ class FreetimeResource
         return [
           'id' => $freetime->getId(),
           'teacher_name' => $teacher->getUser()->getName(),
-          'date_to' => $event->getDateTo(),
           'date_from' => $event->getDateFrom(),
+          'date_to' => $event->getDateTo(),
           'event_id' => $event->getId(),
         ];
     }
