@@ -4,7 +4,7 @@
 namespace App\DTO\User;
 
 
-interface UserDTOInterface
+interface UserCreateDTOInterface
 {
     public function getName(): string;
     public function getEmail(): string;

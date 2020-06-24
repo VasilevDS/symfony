@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\DTO\User\TeacherDTO;
+use App\DTO\User\TeacherCreateDTO;
 use App\Entity\Teacher;
 use App\Repository\TeacherRepository;
 use App\Repository\ThemeRepository;
@@ -39,7 +39,7 @@ class TeacherService
         return $data;
     }
 
-    public function add(TeacherDTO $DTO): array
+    public function add(TeacherCreateDTO $DTO): array
     {
         $user = $this->userService->createOrUpdate($DTO);
         $teacher = new Teacher();
@@ -66,7 +66,7 @@ class TeacherService
         return TeacherResource::toArray($teacher);
     }
 
-    public function update(int $id, TeacherDTO $DTO): array
+    public function update(int $id, TeacherCreateDTO $DTO): array
     {
         $teacher = $this->repository->findOneByIdJoinedToUser($id);
         if ($teacher === null) {

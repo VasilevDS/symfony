@@ -4,15 +4,17 @@
 namespace App\Controller;
 
 
-use App\DTO\Event\FreetimeDTO;
+use App\DTO\Event\FreetimeCreateDTO;
 use App\Service\FreetimeService;
 use DateTime;
+use Doctrine\ORM\EntityNotFoundException;
 use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FreetimeController
+class FreetimeController extends AbstractController
 {
     private FreetimeService $service;
 
@@ -37,7 +39,7 @@ class FreetimeController
     public function store(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $dto = new FreetimeDTO(
+        $dto = new FreetimeCreateDTO(
             $data['id_teacher'],
             new DateTime($data['date_from']),
             new DateTime($data['date_to'])
@@ -49,6 +51,7 @@ class FreetimeController
 
     /**
      * @Route("/freetime/{id}", methods="GET")
+     * @throws EntityNotFoundException
      */
     public function show(int $id)
     {
@@ -63,7 +66,7 @@ class FreetimeController
     public function update(Request $request, int $id)
     {
         $data = json_decode($request->getContent(), true);
-        $dto = new FreetimeDTO(
+        $dto = new FreetimeCreateDTO(
             $data['id_teacher'],
             new DateTime($data['date_from']),
             new DateTime($data['date_to'])
@@ -75,6 +78,7 @@ class FreetimeController
 
     /**
      * @Route("/freetime/{id}", methods="DELETE")
+     * @throws EntityNotFoundException
      */
     public function destroy(int $id)
     {

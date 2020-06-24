@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 
-use App\DTO\Event\LessonDTO;
+use App\DTO\Event\LessonCreateDTO;
 use App\Service\LessonService;
 use DateTime;
 use Exception;
@@ -37,7 +37,7 @@ class LessonController
     public function store(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $dto = new LessonDTO(
+        $dto = new LessonCreateDTO(
             $data['id_teacher'],
             $data['id_student'],
             $data['id_theme'],
@@ -65,7 +65,7 @@ class LessonController
     public function update(Request $request, int $id)
     {
         $data = json_decode($request->getContent(), true);
-        $dto = new LessonDTO(
+        $dto = new LessonCreateDTO(
             $data['id_teacher'],
             $data['id_student'],
             $data['id_theme'],

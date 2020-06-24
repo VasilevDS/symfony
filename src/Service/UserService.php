@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\DTO\User\UserDTOInterface;
+use App\DTO\User\UserCreateDTOInterface;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,7 +25,7 @@ class UserService
         $this->encoder = $encoder;
     }
 
-    public function createOrUpdate(UserDTOInterface $DTO, User $user = null): User
+    public function createOrUpdate(UserCreateDTOInterface $DTO, User $user = null): User
     {
         $user = $user ?? new User();
         $user->setName($DTO->getName())

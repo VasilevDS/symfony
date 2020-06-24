@@ -4,23 +4,20 @@
 namespace App\Service;
 
 
-use App\DTO\Event\EventDTOInterface;
+use App\DTO\Event\EventCreateDTOInterface;
 use App\Entity\Event;
-use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class EventService
 {
     private EntityManagerInterface $manager;
-    private EventRepository $repository;
 
-    public function __construct(EntityManagerInterface $manager, EventRepository $repository)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
-        $this->repository = $repository;
     }
 
-    public function createOrUpdate(EventDTOInterface $DTO, Event $event = null): Event
+    public function createOrUpdate(EventCreateDTOInterface $DTO, Event $event = null): Event
     {
         $event = $event ?? new Event();
         $event->setDateFrom($DTO->getDateFrom())

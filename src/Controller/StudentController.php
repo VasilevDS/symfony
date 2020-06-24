@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\DTO\User\StudentDTO;
+use App\DTO\User\StudentCreateDTO;
 use App\Service\StudentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,7 +34,7 @@ class StudentController extends AbstractController
     public function store(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $dto = new StudentDTO($data['name'],$data['email'],$data['password']);
+        $dto = new StudentCreateDTO($data['name'],$data['email'],$data['password']);
         $result = $this->service->add($dto);
 
         return new JsonResponse($result);
@@ -55,7 +55,7 @@ class StudentController extends AbstractController
     public function update(Request $request, int $id)
     {
         $data = json_decode($request->getContent(), true);
-        $dto = new StudentDTO($data['name'],$data['email'],$data['password']);
+        $dto = new StudentCreateDTO($data['name'],$data['email'],$data['password']);
         $result = $this->service->update($id, $dto);
 
         return new JsonResponse($result);

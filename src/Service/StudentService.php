@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\DTO\User\StudentDTO;
+use App\DTO\User\StudentCreateDTO;
 use App\Entity\Student;
 use App\Repository\StudentRepository;
 use App\Resource\StudentResource;
@@ -35,7 +35,7 @@ class StudentService
         return $data;
     }
 
-    public function add(StudentDTO $DTO): array
+    public function add(StudentCreateDTO $DTO): array
     {
         $user = $this->userService->createOrUpdate($DTO);
         $student = new Student();
@@ -57,7 +57,7 @@ class StudentService
         return StudentResource::toArray($student);
     }
 
-    public function update(int $id, StudentDTO $DTO): array
+    public function update(int $id, StudentCreateDTO $DTO): array
     {
         $student = $this->repository->findOneByIdJoinedToUser($id);
         if ($student === null) {

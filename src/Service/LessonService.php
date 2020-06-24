@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\DTO\Event\LessonDTO;
+use App\DTO\Event\LessonCreateDTO;
 use App\Entity\Lesson;
 use App\Repository\FreetimeRepository;
 use App\Repository\LessonRepository;
@@ -12,6 +12,7 @@ use App\Repository\StudentRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\ThemeRepository;
 use App\Resource\LessonResource;
+use App\Validation\LessonValidatorService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class LessonService
@@ -23,6 +24,7 @@ class LessonService
     private StudentRepository $studentRepository;
     private ThemeRepository $themeRepository;
     private FreetimeRepository $freetimeRepository;
+    private LessonValidatorService $validator;
 
     public function __construct(
         EntityManagerInterface $manager,
@@ -31,7 +33,8 @@ class LessonService
         TeacherRepository $teacherRepository,
         StudentRepository $studentRepository,
         ThemeRepository $themeRepository,
-        FreetimeRepository $freetimeRepository
+        FreetimeRepository $freetimeRepository,
+        LessonValidatorService $validator
     )
     {
         $this->manager = $manager;
@@ -41,6 +44,7 @@ class LessonService
         $this->studentRepository = $studentRepository;
         $this->themeRepository = $themeRepository;
         $this->freetimeRepository = $freetimeRepository;
+        $this->validator = $validator;
     }
 
     public function getAll(): array
@@ -53,8 +57,10 @@ class LessonService
         return $data;
     }
 
-    public function add(LessonDTO $DTO): array
+    public function add(LessonCreateDTO $DTO): array
     {
+        $this->validator->validateForCreate($DTO);
+
         $event = $this->eventService->createOrUpdate($DTO);
         $teacher = $this->teacherRepository->find($DTO->getIdTeacher());
         $student = $this->studentRepository->find($DTO->getIdStudent());
@@ -85,12 +91,14 @@ class LessonService
         return LessonResource::toArray($lesson);
     }
 
-    public function update(int $id, LessonDTO $DTO): array
+    public function update(int $id, LessonCreateDTO $DTO): array
     {
         $lesson = $this->repository->findOneByIdJoinedToEventAndTeacher($id);
         if ($lesson === null) {
             return ['error' => "lesson not found [id: $id]"];
         }
+
+        $this->validator->validateForUpdate($DTO, $id);
 
         $event = $lesson->getEvent();
         $event = $this->eventService->createOrUpdate($DTO, $event);

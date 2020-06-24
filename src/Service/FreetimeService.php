@@ -1,16 +1,19 @@
-<?php
+<?php /** @noinspection PhpUnhandledExceptionInspection */
 
 
 namespace App\Service;
 
 
-use App\DTO\Event\FreetimeDTO;
+use App\DTO\Event\FreetimeCreateDTO;
 use App\Entity\Freetime;
 use App\Repository\FreetimeRepository;
 use App\Repository\TeacherRepository;
+use App\Resource\DTO\FreetimeDTO;
+use App\Resource\Factory\FreetimeDTOFactory;
 use App\Resource\FreetimeResource;
-use App\Validation\ValidatorService;
+use App\Validation\FreetimeValidatorService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 
 class FreetimeService
 {
@@ -18,14 +21,16 @@ class FreetimeService
     private FreetimeRepository $repository;
     private EventService $eventService;
     private TeacherRepository $teacherRepository;
-    private ValidatorService $validator;
+    private FreetimeValidatorService $validator;
+    private FreetimeDTOFactory $DTOFactory;
 
     public function __construct(
         EntityManagerInterface $manager,
         FreetimeRepository $repository,
         EventService $eventService,
-        ValidatorService $validator,
-        TeacherRepository $teacherRepository
+        TeacherRepository $teacherRepository,
+        FreetimeDTOFactory $DTOFactory,
+        FreetimeValidatorService $validator
     )
     {
         $this->manager = $manager;
@@ -33,11 +38,13 @@ class FreetimeService
         $this->eventService = $eventService;
         $this->teacherRepository = $teacherRepository;
         $this->validator = $validator;
+        $this->DTOFactory = $DTOFactory;
     }
 
     public function getAll(): array
     {
         $freetimes = $this->repository->findAllByIdJoinedToEventAndTeacher();
+        /** @var FreetimeDTO[] $data */
         $data = [];
         foreach ($freetimes as $freetime) {
             $data[] = FreetimeResource::toArray($freetime);
@@ -45,33 +52,16 @@ class FreetimeService
         return $data;
     }
 
-    public function add(FreetimeDTO $DTO): array
+    public function add(FreetimeCreateDTO $DTO): array
     {
-        $this->validator->dateFromNoEarlierToday->setParam($DTO->getDateFrom());
-        $this->validator->dateFromNoLaterThanDateTo->setParam($DTO->getDateFrom(), $DTO->getDateTo());
-        $this->validator->dateRangeIntersectedFreetimes->setParam(
-            $DTO->getIdTeacher(),
-            $DTO->getDateFrom(),
-            $DTO->getDateTo()
-        );
-
-        $this->validator->addRules(
-            $this->validator->dateFromNoEarlierToday,
-            $this->validator->dateFromNoLaterThanDateTo,
-            $this->validator->dateRangeIntersectedFreetimes
-        );
-
-        $errors = $this->validator->validate();
-        if($errors !== []) {
-            return ['errors' => $errors];
-        }
+        $this->validator->validateForCreate($DTO);
 
         $event = $this->eventService->createOrUpdate($DTO);
 
         $teacher = $this->teacherRepository->find($DTO->getIdTeacher());
         if ($teacher === null) {
             $id = $DTO->getIdTeacher();
-            return ['error' => "teacher not found [id: $id]"];
+            throw new EntityNotFoundException("teacher not found [id: $id]");
         }
 
         $freetime = new Freetime();
@@ -88,18 +78,21 @@ class FreetimeService
     {
         $freetime = $this->repository->findOneByIdJoinedToEventAndTeacher($id);
         if ($freetime === null) {
-            return ['error' => "freetime not found [id: $id]"];
+            throw new EntityNotFoundException("freetime not found [id: $id]");
         }
 
         return FreetimeResource::toArray($freetime);
     }
 
-    public function update(int $id, FreetimeDTO $DTO)
+    public function update(int $id, FreetimeCreateDTO $DTO)
     {
         $freetime = $this->repository->findOneByIdJoinedToEventAndTeacher($id);
         if ($freetime === null) {
-            return ['error' => "freetime not found [id: $id]"];
+            throw new EntityNotFoundException("freetime not found [id: $id]");
         }
+
+        $this->validator->validateForUpdate($DTO, $id);
+
         $event = $freetime->getEvent();
         $event = $this->eventService->createOrUpdate($DTO, $event);
         $freetime->setEvent($event);
@@ -114,7 +107,7 @@ class FreetimeService
     {
         $freetime = $this->repository->find($id);
         if ($freetime === null) {
-            return ['error' => "freetime not found [id: $id]"];
+            throw new EntityNotFoundException("freetime not found [id: $id]");
         }
         $this->manager->remove($freetime);
         $this->manager->flush();

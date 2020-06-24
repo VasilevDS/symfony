@@ -22,7 +22,7 @@ class IsDateRangeIntersectedFreetimesIgnoreId implements RuleInterface
     }
 
 
-    public function setParam(int $teacherId, int $freetimeId, DateTime $dateFrom, DateTime $dateTo): void
+    public function setParam(int $freetimeId, int $teacherId, DateTime $dateFrom, DateTime $dateTo): void
     {
         $this->teacherId = $teacherId;
         $this->freetimeId = $freetimeId;

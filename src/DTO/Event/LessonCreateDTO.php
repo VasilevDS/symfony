@@ -7,7 +7,7 @@ namespace App\DTO\Event;
 use App\Enum\EventType;
 use DateTime;
 
-class LessonDTO implements EventDTOInterface
+class LessonCreateDTO implements EventCreateDTOInterface
 {
     private int $idTeacher;
     private int $idStudent;
