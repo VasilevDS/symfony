@@ -1,0 +1,30 @@
+version: "3.5"
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/Nginx.Dockerfile
+    image: nginx
+    ports:
+      - 8098:80
+    links:
+      - fpm
+    volumes:
+      - ./:/var/www/symfony-docker
+  fpm:
+    build:
+      context: .
+      dockerfile: docker/Fpm.Dockerfile
+    volumes:
+    - ./:/var/www/symfony-docker
+    links:
+      - pgsql
+  pgsql:
+    image: postgres
+    environment:
+      - POSTGRES_USER=learning
+      - POSTGRES_PASSWORD=learning
+      - POSTGRES_DB=learning_db
+    ports:
+      - "5433:5432"
