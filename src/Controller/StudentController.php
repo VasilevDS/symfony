@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\DTO\User\StudentCreateDTO;
 use App\Service\StudentService;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,8 +24,8 @@ class StudentController extends AbstractController
      */
     public function index()
     {
-        $data = $this->service->getAll();
-        return new JsonResponse($data);
+        $Studentdata = $this->service->getAll();
+        return $this->json($Studentdata);
     }
 
     /**
@@ -35,38 +35,41 @@ class StudentController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         $dto = new StudentCreateDTO($data['name'],$data['email'],$data['password']);
-        $result = $this->service->add($dto);
+        $item = $this->service->add($dto);
 
-        return new JsonResponse($result);
+        return $this->json($item);
     }
 
     /**
      * @Route("/student/{id}", methods="GET")
+     * @throws EntityNotFoundException
      */
     public function show(int $id)
     {
-        $result = $this->service->get($id);
-        return new JsonResponse($result);
+        $item = $this->service->get($id);
+        return $this->json($item);
     }
 
     /**
      * @Route("/student/{id}", methods="PUT")
+     * @throws EntityNotFoundException
      */
     public function update(Request $request, int $id)
     {
         $data = json_decode($request->getContent(), true);
         $dto = new StudentCreateDTO($data['name'],$data['email'],$data['password']);
-        $result = $this->service->update($id, $dto);
+        $item = $this->service->update($id, $dto);
 
-        return new JsonResponse($result);
+        return $this->json($item);
     }
 
     /**
      * @Route("/student/{id}", methods="DELETE")
+     * @throws EntityNotFoundException
      */
     public function destroy(int $id)
     {
         $result = $this->service->remove($id);
-        return new JsonResponse($result);
+        return $this->json($result);
     }
 }

@@ -38,7 +38,7 @@ class FreetimeValidatorService
         $this->dateFromNoEarlierToday->setParam($DTO->getDateFrom());
         $this->dateFromNoLaterThanDateTo->setParam($DTO->getDateFrom(), $DTO->getDateTo());
         $this->dateRangeIntersectedFreetimes->setParam(
-            $DTO->getIdTeacher(),
+            $DTO->getTeacherId(),
             $DTO->getDateFrom(),
             $DTO->getDateTo()
         );
@@ -56,7 +56,7 @@ class FreetimeValidatorService
         $this->dateFromNoLaterThanDateTo->setParam($DTO->getDateFrom(), $DTO->getDateTo());
         $this->dateRangeIntersectedFreetimesIgnoreId->setParam(
             $freetimeId,
-            $DTO->getIdTeacher(),
+            $DTO->getTeacherId(),
             $DTO->getDateFrom(),
             $DTO->getDateTo()
         );

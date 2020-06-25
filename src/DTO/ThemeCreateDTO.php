@@ -4,14 +4,10 @@
 namespace App\DTO;
 
 
-class ThemeDTO
+class ThemeCreateDTO
 {
     private string $name;
 
-    /**
-     * ThemeDTO constructor.
-     * @param string $name
-     */
     public function __construct(string $name)
     {
         $this->name = $name;

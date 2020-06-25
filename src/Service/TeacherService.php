@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnhandledExceptionInspection */
 
 
 namespace App\Service;
@@ -8,8 +8,10 @@ use App\DTO\User\TeacherCreateDTO;
 use App\Entity\Teacher;
 use App\Repository\TeacherRepository;
 use App\Repository\ThemeRepository;
-use App\Resource\TeacherResource;
+use App\Resource\DTO\TeacherDTO;
+use App\Resource\Factory\TeacherDTOFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 
 class TeacherService
 {
@@ -17,29 +19,34 @@ class TeacherService
     private TeacherRepository $repository;
     private UserService $userService;
     private ThemeRepository $themeRepository;
+    private TeacherDTOFactory $DTOFactory;
 
-    public function __construct(EntityManagerInterface $manager,
-                                TeacherRepository $repository,
-                                ThemeRepository $themeRepository,
-                                UserService $userService)
+    public function __construct(
+        EntityManagerInterface $manager,
+        TeacherRepository $repository,
+        ThemeRepository $themeRepository,
+        UserService $userService,
+        TeacherDTOFactory $DTOFactory
+    )
     {
         $this->manager = $manager;
         $this->repository = $repository;
         $this->userService = $userService;
         $this->themeRepository = $themeRepository;
+        $this->DTOFactory = $DTOFactory;
     }
 
     public function getAll(): array
     {
         $teachers = $this->repository->findAllByIdJoinedToUser();
-        $data = [];
+        $TeachersData = [];
         foreach ($teachers as $teacher) {
-            $data[] = TeacherResource::toArray($teacher);
+            $TeachersData[] = $this->DTOFactory->fromTeacher($teacher);
         }
-        return $data;
+        return $TeachersData;
     }
 
-    public function add(TeacherCreateDTO $DTO): array
+    public function add(TeacherCreateDTO $DTO): TeacherDTO
     {
         $user = $this->userService->createOrUpdate($DTO);
         $teacher = new Teacher();
@@ -53,24 +60,24 @@ class TeacherService
         $this->manager->persist($teacher);
         $this->manager->flush();
 
-        return TeacherResource::toArray($teacher);
+        return $this->DTOFactory->fromTeacher($teacher);
     }
 
-    public function get(int $id): array
+    public function get(int $id): TeacherDTO
     {
         $teacher = $this->repository->findOneByIdJoinedToUser($id);
         if ($teacher === null) {
-            return ['error' => "teacher not found [id: $id]"];
+            throw new EntityNotFoundException("teacher not found [id: $id]");
         }
 
-        return TeacherResource::toArray($teacher);
+        return $this->DTOFactory->fromTeacher($teacher);
     }
 
-    public function update(int $id, TeacherCreateDTO $DTO): array
+    public function update(int $id, TeacherCreateDTO $DTO): TeacherDTO
     {
         $teacher = $this->repository->findOneByIdJoinedToUser($id);
         if ($teacher === null) {
-            return ['error' => "teacher not found [id: $id]"];
+            throw new EntityNotFoundException("teacher not found [id: $id]");
         }
         $user = $teacher->getUser();
         $user = $this->userService->createOrUpdate($DTO, $user);
@@ -85,14 +92,14 @@ class TeacherService
         $this->manager->persist($teacher);
         $this->manager->flush();
 
-        return TeacherResource::toArray($teacher);
+        return $this->DTOFactory->fromTeacher($teacher);
     }
 
     public function remove(int $id): array
     {
         $teacher = $this->repository->find($id);
         if ($teacher === null) {
-            return ['error' => "teacher not found [id: $id]"];
+            throw new EntityNotFoundException("teacher not found [id: $id]");
         }
         $this->manager->remove($teacher);
         $this->manager->flush();

@@ -5,6 +5,7 @@
         "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "fresh/doctrine-enum-bundle": "~7.0",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "5.1.*",
@@ -23,14 +24,14 @@
         "symfony/orm-pack": "*",
         "symfony/process": "5.1.*",
         "symfony/security-bundle": "5.1.*",
+        "symfony/serializer": "5.1.*",
         "symfony/serializer-pack": "*",
         "symfony/string": "5.1.*",
         "symfony/translation": "5.1.*",
         "symfony/twig-pack": "*",
         "symfony/validator": "5.1.*",
         "symfony/web-link": "5.1.*",
-        "symfony/yaml": "5.1.*",
-      "ext-json": "*"
+        "symfony/yaml": "5.1.*"
     },
     "require-dev": {
         "symfony/debug-pack": "*",

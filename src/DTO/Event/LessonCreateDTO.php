@@ -9,50 +9,50 @@ use DateTime;
 
 class LessonCreateDTO implements EventCreateDTOInterface
 {
-    private int $idTeacher;
-    private int $idStudent;
-    private int $idTheme;
-    private int $idFreetime;
+    private int $teacherId;
+    private int $studentId;
+    private int $themeId;
+    private int $freetimeId;
     private DateTime $dateFrom;
     private DateTime $dateTo;
     private string $type;
 
     public function __construct(
-        int $idTeacher,
-        int $idStudent,
-        int $idTheme,
-        int $idFreetime,
+        int $teacherId,
+        int $studentId,
+        int $themeId,
+        int $freetimeId,
         DateTime $dateFrom,
         DateTime $dateTo
     )
     {
-        $this->idTeacher = $idTeacher;
-        $this->idStudent = $idStudent;
-        $this->idTheme = $idTheme;
-        $this->idFreetime = $idFreetime;
+        $this->teacherId = $teacherId;
+        $this->studentId = $studentId;
+        $this->themeId = $themeId;
+        $this->freetimeId = $freetimeId;
         $this->dateFrom = $dateFrom;
         $this->dateTo = $dateTo;
         $this->type = EventType::LESSON;
     }
 
-    public function getIdTeacher(): int
+    public function getTeacherId(): int
     {
-        return $this->idTeacher;
+        return $this->teacherId;
     }
 
-    public function getIdStudent(): int
+    public function getStudentId(): int
     {
-        return $this->idStudent;
+        return $this->studentId;
     }
 
-    public function getIdTheme(): int
+    public function getThemeId(): int
     {
-        return $this->idTheme;
+        return $this->themeId;
     }
 
-    public function getIdFreetime(): int
+    public function getFreetimeId(): int
     {
-        return $this->idFreetime;
+        return $this->freetimeId;
     }
 
     public function getDateFrom(): DateTime

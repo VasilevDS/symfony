@@ -33,6 +33,7 @@ class IsDateRangeIntersectedFreetimesIgnoreId implements RuleInterface
     /** @noinspection DuplicatedCode */
     public function passes(): bool
     {
+        // выборка дат пересекаемых с другими датами слотов, игнорируя даты обновляемого слота
         $query = $this->repository
             ->createQueryBuilder('f')
             ->join('f.event', 'e')

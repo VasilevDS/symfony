@@ -7,12 +7,13 @@ namespace App\Controller;
 use App\DTO\Event\LessonCreateDTO;
 use App\Service\LessonService;
 use DateTime;
+use Doctrine\ORM\EntityNotFoundException;
 use Exception;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LessonController
+class LessonController extends AbstractController
 {
     private LessonService $service;
 
@@ -26,8 +27,8 @@ class LessonController
      */
     public function index()
     {
-        $data = $this->service->getAll();
-        return new JsonResponse($data);
+        $lessonsData = $this->service->getAll();
+        return $this->json($lessonsData);
     }
 
     /**
@@ -45,21 +46,24 @@ class LessonController
             new DateTime($data['date_from']),
             new DateTime($data['date_to'])
         );
-        $result = $this->service->add($dto);
+        $item = $this->service->add($dto);
 
-        return new JsonResponse($result);
+        return $this->json($item);
     }
 
     /**
      * @Route("/lesson/{id}", methods="GET")
+     * @throws EntityNotFoundException
      */
     public function show(int $id)
     {
-        $result = $this->service->get($id);
-        return new JsonResponse($result);
+        $item = $this->service->get($id);
+        return $this->json($item);
     }
+
     /**
      * @Route("/lesson/{id}", methods="PUT")
+     * @throws EntityNotFoundException
      * @throws Exception
      */
     public function update(Request $request, int $id)
@@ -73,18 +77,19 @@ class LessonController
             new DateTime($data['date_from']),
             new DateTime($data['date_to'])
         );
-        $result = $this->service->update($id, $dto);
+        $item = $this->service->update($id, $dto);
 
-        return new JsonResponse($result);
+        return $this->json($item);
     }
 
     /**
      * @Route("/lesson/{id}", methods="DELETE")
+     * @throws EntityNotFoundException
      */
     public function destroy(int $id)
     {
-        $result = $this->service->remove($id);
-        return new JsonResponse($result);
+        $item = $this->service->remove($id);
+        return $this->json($item);
     }
 
 }

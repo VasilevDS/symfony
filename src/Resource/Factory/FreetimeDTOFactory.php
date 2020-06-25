@@ -9,7 +9,7 @@ use App\Resource\DTO\FreetimeDTO;
 
 class FreetimeDTOFactory
 {
-    public function fromFreetime(Freetime $freetime)
+    public function fromFreetime(Freetime $freetime): FreetimeDTO
     {
         return new FreetimeDTO(
             $freetime->getId(),

@@ -6,7 +6,6 @@ use App\Entity\Teacher;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -49,11 +48,10 @@ class TeacherRepository extends ServiceEntityRepository
         )->setParameter('id', $id);
 
         try {
-            return $query->getSingleResult();
-        } catch (NoResultException $e) {
-            return null;
+            return $query->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             return null;
         }
+
     }
 }

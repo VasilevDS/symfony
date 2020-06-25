@@ -10,7 +10,6 @@ use App\Repository\FreetimeRepository;
 use App\Repository\TeacherRepository;
 use App\Resource\DTO\FreetimeDTO;
 use App\Resource\Factory\FreetimeDTOFactory;
-use App\Resource\FreetimeResource;
 use App\Validation\FreetimeValidatorService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
@@ -47,20 +46,20 @@ class FreetimeService
         /** @var FreetimeDTO[] $data */
         $data = [];
         foreach ($freetimes as $freetime) {
-            $data[] = FreetimeResource::toArray($freetime);
+            $data[] = $this->DTOFactory->fromFreetime($freetime);
         }
         return $data;
     }
 
-    public function add(FreetimeCreateDTO $DTO): array
+    public function add(FreetimeCreateDTO $DTO): FreetimeDTO
     {
         $this->validator->validateForCreate($DTO);
 
         $event = $this->eventService->createOrUpdate($DTO);
 
-        $teacher = $this->teacherRepository->find($DTO->getIdTeacher());
+        $teacher = $this->teacherRepository->find($DTO->getTeacherId());
         if ($teacher === null) {
-            $id = $DTO->getIdTeacher();
+            $id = $DTO->getTeacherId();
             throw new EntityNotFoundException("teacher not found [id: $id]");
         }
 
@@ -71,20 +70,19 @@ class FreetimeService
         $this->manager->persist($freetime);
         $this->manager->flush();
 
-        return FreetimeResource::toArray($freetime);
+        return $this->DTOFactory->fromFreetime($freetime);
     }
 
-    public function get(int $id): array
+    public function get(int $id): FreetimeDTO
     {
         $freetime = $this->repository->findOneByIdJoinedToEventAndTeacher($id);
         if ($freetime === null) {
             throw new EntityNotFoundException("freetime not found [id: $id]");
         }
-
-        return FreetimeResource::toArray($freetime);
+        return $this->DTOFactory->fromFreetime($freetime);
     }
 
-    public function update(int $id, FreetimeCreateDTO $DTO)
+    public function update(int $id, FreetimeCreateDTO $DTO): FreetimeDTO
     {
         $freetime = $this->repository->findOneByIdJoinedToEventAndTeacher($id);
         if ($freetime === null) {
@@ -100,7 +98,7 @@ class FreetimeService
         $this->manager->persist($freetime);
         $this->manager->flush();
 
-        return FreetimeResource::toArray($freetime);
+        return $this->DTOFactory->fromFreetime($freetime);
     }
 
     public function remove(int $id): array

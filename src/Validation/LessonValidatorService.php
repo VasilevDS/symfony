@@ -38,7 +38,7 @@ class LessonValidatorService
         $this->dateFromNoEarlierToday->setParam($DTO->getDateFrom());
         $this->dateFromNoLaterThanDateTo->setParam($DTO->getDateFrom(), $DTO->getDateTo());
         $this->dateRangeIntersectedLessons->setParam(
-            $DTO->getIdFreetime(),
+            $DTO->getFreetimeId(),
             $DTO->getDateFrom(),
             $DTO->getDateTo()
         );
@@ -56,7 +56,7 @@ class LessonValidatorService
         $this->dateFromNoLaterThanDateTo->setParam($DTO->getDateFrom(), $DTO->getDateTo());
         $this->dateRangeIntersectedLessonsIgnoreId->setParam(
             $lessonId,
-            $DTO->getIdFreetime(),
+            $DTO->getFreetimeId(),
             $DTO->getDateFrom(),
             $DTO->getDateTo()
         );

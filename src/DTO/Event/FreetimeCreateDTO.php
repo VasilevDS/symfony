@@ -9,22 +9,22 @@ use DateTime;
 
 class FreetimeCreateDTO implements EventCreateDTOInterface
 {
-    private int $idTeacher;
+    private int $teacherId;
     private DateTime $dateFrom;
     private DateTime $dateTo;
     private string $type;
 
-    public function __construct(int $idTeacher, DateTime $dateFrom, DateTime $dateTo)
+    public function __construct(int $teacherId, DateTime $dateFrom, DateTime $dateTo)
     {
-        $this->idTeacher = $idTeacher;
+        $this->teacherId = $teacherId;
         $this->dateFrom = $dateFrom;
         $this->dateTo = $dateTo;
         $this->type = EventType::FREETIME;
     }
 
-    public function getIdTeacher(): int
+    public function getTeacherId(): int
     {
-        return $this->idTeacher;
+        return $this->teacherId;
     }
 
     public function getDateTo(): DateTime

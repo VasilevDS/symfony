@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection DuplicatedCode */
 
 
 namespace App\Validation\Rules;
@@ -30,6 +30,7 @@ class IsDateRangeIntersectedFreetimes implements RuleInterface
 
     public function passes(): bool
     {
+        // выборка дат пересекаемых с другими датами слотов
         $query = $this->repository
             ->createQueryBuilder('f')
             ->join('f.event', 'e')

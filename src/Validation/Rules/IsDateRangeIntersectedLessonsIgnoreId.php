@@ -35,11 +35,12 @@ class IsDateRangeIntersectedLessonsIgnoreId implements RuleInterface
 
     public function passes(): bool
     {
+        // выборка дат пересекаемых с другими датами уроков, игнорируя даты обновляемого урока
         $queryL = $this->repository
             ->createQueryBuilder('l')
             ->join('l.event', 'e')
             ->where('l.freetime = :freetimeId')
-            ->andWhere('l.id <= :lessonId')
+            ->andWhere('l.id != :lessonId')
             ->andWhere('e.dateFrom <= :dateTo')
             ->andWhere('e.dateTo >= :dateFrom')
             ->select('e.dateFrom, e.dateTo')
@@ -61,6 +62,7 @@ class IsDateRangeIntersectedLessonsIgnoreId implements RuleInterface
             return false;
         }
 
+        // проверка попадаю ли даты в период слота
         $queryF = $this->freetimeRepository
             ->createQueryBuilder('f')
             ->join('f.event', 'e')

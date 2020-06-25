@@ -33,6 +33,7 @@ class IsDateRangeIntersectedLessons implements RuleInterface
 
     public function passes(): bool
     {
+        // выборка дат пересекаемых с другими датами уроков
         $queryL = $this->repository
             ->createQueryBuilder('l')
             ->join('l.event', 'e')
@@ -57,6 +58,7 @@ class IsDateRangeIntersectedLessons implements RuleInterface
             return false;
         }
 
+        // проверка попадаю ли даты в период слота
         $queryF = $this->freetimeRepository
             ->createQueryBuilder('f')
             ->join('f.event', 'e')

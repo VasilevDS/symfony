@@ -28,8 +28,8 @@ class FreetimeController extends AbstractController
      */
     public function index()
     {
-        $data = $this->service->getAll();
-        return new JsonResponse($data);
+        $freetimeData = $this->service->getAll();
+        return $this->json($freetimeData);
     }
 
     /**
@@ -44,9 +44,9 @@ class FreetimeController extends AbstractController
             new DateTime($data['date_from']),
             new DateTime($data['date_to'])
         );
-        $result = $this->service->add($dto);
+        $item = $this->service->add($dto);
 
-        return new JsonResponse($result);
+        return new JsonResponse($item);
     }
 
     /**
@@ -55,8 +55,8 @@ class FreetimeController extends AbstractController
      */
     public function show(int $id)
     {
-        $result = $this->service->get($id);
-        return new JsonResponse($result);
+        $item = $this->service->get($id);
+        return $this->json($item);
     }
 
     /**
@@ -71,9 +71,9 @@ class FreetimeController extends AbstractController
             new DateTime($data['date_from']),
             new DateTime($data['date_to'])
         );
-        $result = $this->service->update($id, $dto);
+        $item = $this->service->update($id, $dto);
 
-        return new JsonResponse($result);
+        return new JsonResponse($item);
     }
 
     /**
@@ -83,6 +83,6 @@ class FreetimeController extends AbstractController
     public function destroy(int $id)
     {
         $result = $this->service->remove($id);
-        return new JsonResponse($result);
+        return $this->json($result);
     }
 }
