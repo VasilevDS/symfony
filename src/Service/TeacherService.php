@@ -4,12 +4,12 @@
 namespace App\Service;
 
 
-use App\DTO\User\TeacherCreateDTO;
+use App\DTO\Request\User\TeacherCreateDTO;
+use App\DTO\Response\DTO\TeacherDTO;
+use App\DTO\Response\Factory\TeacherDTOFactory;
 use App\Entity\Teacher;
 use App\Repository\TeacherRepository;
 use App\Repository\ThemeRepository;
-use App\Resource\DTO\TeacherDTO;
-use App\Resource\Factory\TeacherDTOFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 

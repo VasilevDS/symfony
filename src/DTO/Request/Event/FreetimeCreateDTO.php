@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\DTO\Event;
+namespace App\DTO\Request\Event;
 
 
 use App\Enum\EventType;

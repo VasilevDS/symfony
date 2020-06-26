@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Resource\Factory;
+namespace App\DTO\Response\Factory;
 
 
+use App\DTO\Response\DTO\ThemeDTO;
 use App\Entity\Theme;
-use App\Resource\DTO\ThemeDTO;
 
 class ThemeDTOFactory
 {

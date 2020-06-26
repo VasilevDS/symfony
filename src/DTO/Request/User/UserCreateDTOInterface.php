@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\DTO\User;
+namespace App\DTO\Request\User;
 
 
 interface UserCreateDTOInterface

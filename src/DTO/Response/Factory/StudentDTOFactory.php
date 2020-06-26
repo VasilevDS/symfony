@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Resource\Factory;
+namespace App\DTO\Response\Factory;
 
 
+use App\DTO\Response\DTO\StudentDTO;
 use App\Entity\Student;
-use App\Resource\DTO\StudentDTO;
 
 class StudentDTOFactory
 {

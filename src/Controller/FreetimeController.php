@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 
-use App\DTO\Event\FreetimeCreateDTO;
+use App\DTO\Request\Event\FreetimeCreateDTO;
 use App\Service\FreetimeService;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;

@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\DTO\User;
+namespace App\DTO\Request\User;
 
 use App\Enum\RoleType;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class StudentCreateDTO implements UserCreateDTOInterface
+class TeacherCreateDTO implements UserCreateDTOInterface
 {
     /**
      * @Assert\Length(min=2, max=255)
@@ -24,12 +24,15 @@ class StudentCreateDTO implements UserCreateDTOInterface
      */
     private String $password;
 
-    public function __construct(string $name, string $email, string $password)
+    private array $themes;
+
+    public function __construct(string $name, string $email, string $password, array $themes)
     {
         $this->name = $name;
         $this->email = $email;
-        $this->roles = [RoleType::STUDENT];
+        $this->roles = [RoleType::TEACHER];
         $this->password = $password;
+        $this->themes = $themes;
     }
 
     /**
@@ -63,4 +66,13 @@ class StudentCreateDTO implements UserCreateDTOInterface
     {
         return $this->password;
     }
+
+    /**
+     * @return array
+     */
+    public function getThemes(): array
+    {
+        return $this->themes;
+    }
+
 }

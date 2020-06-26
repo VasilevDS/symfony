@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Resource\DTO;
+namespace App\DTO\Response\DTO;
 
 
 class ThemeDTO

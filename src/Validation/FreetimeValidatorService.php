@@ -4,7 +4,7 @@
 namespace App\Validation;
 
 
-use App\DTO\Event\FreetimeCreateDTO;
+use App\DTO\Request\Event\FreetimeCreateDTO;
 use App\Validation\Rules\DateFromNoEarlierToday;
 use App\Validation\Rules\DateFromNoLaterThanDateTo;
 use App\Validation\Rules\IsDateRangeIntersectedFreetimes;

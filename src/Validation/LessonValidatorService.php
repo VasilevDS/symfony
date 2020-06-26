@@ -4,7 +4,7 @@
 namespace App\Validation;
 
 
-use App\DTO\Event\LessonCreateDTO;
+use App\DTO\Request\Event\LessonCreateDTO;
 use App\Validation\Rules\DateFromNoEarlierToday;
 use App\Validation\Rules\DateFromNoLaterThanDateTo;
 use App\Validation\Rules\IsDateRangeIntersectedLessons;

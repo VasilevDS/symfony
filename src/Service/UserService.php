@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\DTO\User\UserCreateDTOInterface;
+use App\DTO\Request\User\UserCreateDTOInterface;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;

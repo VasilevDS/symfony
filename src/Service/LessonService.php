@@ -4,15 +4,15 @@
 namespace App\Service;
 
 
-use App\DTO\Event\LessonCreateDTO;
+use App\DTO\Request\Event\LessonCreateDTO;
+use App\DTO\Response\DTO\LessonDTO;
+use App\DTO\Response\Factory\LessonDTOFactory;
 use App\Entity\Lesson;
 use App\Repository\FreetimeRepository;
 use App\Repository\LessonRepository;
 use App\Repository\StudentRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\ThemeRepository;
-use App\Resource\DTO\LessonDTO;
-use App\Resource\Factory\LessonDTOFactory;
 use App\Validation\LessonValidatorService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;

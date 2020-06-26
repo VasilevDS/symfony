@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 
-use App\DTO\ThemeCreateDTO;
+use App\DTO\Request\ThemeCreateDTO;
 use App\Service\ThemeService;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

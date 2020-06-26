@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\DTO\User\StudentCreateDTO;
+
+use App\DTO\Request\User\StudentCreateDTO;
 use App\Service\StudentService;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -4,12 +4,12 @@
 namespace App\Service;
 
 
-use App\DTO\Event\FreetimeCreateDTO;
+use App\DTO\Request\Event\FreetimeCreateDTO;
+use App\DTO\Response\DTO\FreetimeDTO;
+use App\DTO\Response\Factory\FreetimeDTOFactory;
 use App\Entity\Freetime;
 use App\Repository\FreetimeRepository;
 use App\Repository\TeacherRepository;
-use App\Resource\DTO\FreetimeDTO;
-use App\Resource\Factory\FreetimeDTOFactory;
 use App\Validation\FreetimeValidatorService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;

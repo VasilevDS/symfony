@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\DTO\Event\EventCreateDTOInterface;
+use App\DTO\Request\Event\EventCreateDTOInterface;
 use App\Entity\Event;
 use Doctrine\ORM\EntityManagerInterface;
 

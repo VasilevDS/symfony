@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\DTO\User\TeacherCreateDTO;
+use App\DTO\Request\User\TeacherCreateDTO;
 use App\Service\TeacherService;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,6 +44,10 @@ class TeacherController extends AbstractController
     {
         /** @var TeacherCreateDTO $dto */
         $dto = $this->serializer->deserialize($request->getContent(), TeacherCreateDTO::class, 'json');
+        $errors = $this->validator->validate($dto);
+        if (count($errors) > 0) {
+            return  $this->json(['errors' => $errors,]);
+        }
         $item = $this->service->add($dto);
 
         return $this->json($item);

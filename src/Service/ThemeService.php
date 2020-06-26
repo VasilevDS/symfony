@@ -6,11 +6,11 @@
 namespace App\Service;
 
 
-use App\DTO\ThemeCreateDTO;
+use App\DTO\Request\ThemeCreateDTO;
+use App\DTO\Response\DTO\ThemeDTO;
+use App\DTO\Response\Factory\ThemeDTOFactory;
 use App\Entity\Theme;
 use App\Repository\ThemeRepository;
-use App\Resource\DTO\ThemeDTO;
-use App\Resource\Factory\ThemeDTOFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 

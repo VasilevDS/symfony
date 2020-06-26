@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Resource\Factory;
+namespace App\DTO\Response\Factory;
 
 
+use App\DTO\Response\DTO\TeacherDTO;
 use App\Entity\Teacher;
 use App\Entity\Theme;
-use App\Resource\DTO\TeacherDTO;
 
 class TeacherDTOFactory
 {

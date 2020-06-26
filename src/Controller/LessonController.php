@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 
-use App\DTO\Event\LessonCreateDTO;
+use App\DTO\Request\Event\LessonCreateDTO;
 use App\Service\LessonService;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;

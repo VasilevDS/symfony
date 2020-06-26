@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Resource\Factory;
+namespace App\DTO\Response\Factory;
 
 
+use App\DTO\Response\DTO\FreetimeDTO;
 use App\Entity\Freetime;
-use App\Resource\DTO\FreetimeDTO;
 
 class FreetimeDTOFactory
 {
