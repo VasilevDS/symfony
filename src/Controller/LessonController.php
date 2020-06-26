@@ -6,20 +6,25 @@ namespace App\Controller;
 
 use App\DTO\Event\LessonCreateDTO;
 use App\Service\LessonService;
-use DateTime;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class LessonController extends AbstractController
 {
     private LessonService $service;
+    /**
+     * @var SerializerInterface
+     */
+    private SerializerInterface $serializer;
 
-    public function __construct(LessonService $service)
+    public function __construct(LessonService $service, SerializerInterface $serializer)
     {
         $this->service = $service;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -37,15 +42,8 @@ class LessonController extends AbstractController
      */
     public function store(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
-        $dto = new LessonCreateDTO(
-            $data['id_teacher'],
-            $data['id_student'],
-            $data['id_theme'],
-            $data['id_freetime'],
-            new DateTime($data['date_from']),
-            new DateTime($data['date_to'])
-        );
+        /** @var LessonCreateDTO $dto */
+        $dto = $this->serializer->deserialize($request->getContent(), LessonCreateDTO::class, 'json');
         $item = $this->service->add($dto);
 
         return $this->json($item);
@@ -68,15 +66,8 @@ class LessonController extends AbstractController
      */
     public function update(Request $request, int $id)
     {
-        $data = json_decode($request->getContent(), true);
-        $dto = new LessonCreateDTO(
-            $data['id_teacher'],
-            $data['id_student'],
-            $data['id_theme'],
-            $data['id_freetime'],
-            new DateTime($data['date_from']),
-            new DateTime($data['date_to'])
-        );
+        /** @var LessonCreateDTO $dto */
+        $dto = $this->serializer->deserialize($request->getContent(), LessonCreateDTO::class, 'json');
         $item = $this->service->update($id, $dto);
 
         return $this->json($item);

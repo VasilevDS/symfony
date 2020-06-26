@@ -8,30 +8,30 @@ use DateTime;
 
 class FreetimeDTO
 {
-    private int $teacherId;
+    private int $freetimeId;
     private string $teacherName;
     private DateTime $dateFrom;
     private DateTime $dateTo;
     private int $eventId;
 
     public function __construct(
-        int $teacherId,
+        int $freetimeId,
         string $teacherName,
         DateTime $dateFrom,
         DateTime $dateTo,
         int $eventId
     )
     {
-        $this->teacherId = $teacherId;
+        $this->freetimeId = $freetimeId;
         $this->teacherName = $teacherName;
         $this->dateFrom = $dateFrom;
         $this->dateTo = $dateTo;
         $this->eventId = $eventId;
     }
 
-    public function getTeacherId(): int
+    public function getFreetimeId(): int
     {
-        return $this->teacherId;
+        return $this->freetimeId;
     }
 
     public function getTeacherName(): string

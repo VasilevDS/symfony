@@ -6,6 +6,7 @@ namespace App\DTO\Event;
 
 use App\Enum\EventType;
 use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class LessonCreateDTO implements EventCreateDTOInterface
 {
@@ -13,7 +14,13 @@ class LessonCreateDTO implements EventCreateDTOInterface
     private int $studentId;
     private int $themeId;
     private int $freetimeId;
+    /**
+     * @Assert\DateTime()
+     */
     private DateTime $dateFrom;
+    /**
+     * @Assert\DateTime()
+     */
     private DateTime $dateTo;
     private string $type;
 

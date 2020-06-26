@@ -29,7 +29,7 @@ class TeacherRepository extends ServiceEntityRepository
     public function findAllByIdJoinedToUser()
     {
         $query = $this->getEntityManager()->createQuery(
-            'SELECT t, u
+            'SELECT t, u, th
             FROM App\Entity\Teacher t
             INNER JOIN t.user u
             INNER JOIN t.themes th'
@@ -53,5 +53,22 @@ class TeacherRepository extends ServiceEntityRepository
             return null;
         }
 
+    }
+
+    public function isTeacherContainTheme(int $teacherId, int $themeId): bool
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT t
+            FROM App\Entity\Teacher t
+            INNER JOIN t.themes th
+            WHERE t.id = :teacherId AND th.id = :themeId'
+            )->setParameter('themeId', $themeId)
+            ->setParameter('teacherId', $teacherId);
+        try {
+            $result = $query->getOneOrNullResult();
+            return $result !== null;
+        } catch (NonUniqueResultException $e) {
+            return false;
+        }
     }
 }

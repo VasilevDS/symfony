@@ -66,6 +66,12 @@ class LessonService
     {
         $this->validator->validateForCreate($DTO);
 
+        if(!$this->teacherRepository->isTeacherContainTheme($DTO->getTeacherId(),$DTO->getThemeId()))
+        {
+            $id = $DTO->getThemeId();
+            throw new EntityNotFoundException("theme[id: $id] not found in teacher");
+        }
+
         $event = $this->eventService->createOrUpdate($DTO);
         $teacher = $this->teacherRepository->find($DTO->getTeacherId());
         $student = $this->studentRepository->find($DTO->getStudentId());
@@ -104,6 +110,12 @@ class LessonService
         }
 
         $this->validator->validateForUpdate($DTO, $id);
+
+        if(!$this->teacherRepository->isTeacherContainTheme($DTO->getTeacherId(),$DTO->getThemeId()))
+        {
+            $id = $DTO->getThemeId();
+            throw new EntityNotFoundException("theme[id: $id] not found in teacher");
+        }
 
         $event = $lesson->getEvent();
         $event = $this->eventService->createOrUpdate($DTO, $event);

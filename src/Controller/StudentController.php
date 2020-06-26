@@ -8,14 +8,19 @@ use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
+
 
 class StudentController extends AbstractController
 {
     private StudentService $service;
+    private SerializerInterface $serializer;
 
-    public function __construct(StudentService $service)
+    public function __construct(StudentService $service, SerializerInterface $serializer
+    )
     {
         $this->service = $service;
+        $this->serializer = $serializer;
     }
 
 
@@ -33,8 +38,9 @@ class StudentController extends AbstractController
      */
     public function store(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
-        $dto = new StudentCreateDTO($data['name'],$data['email'],$data['password']);
+        /** @var StudentCreateDTO $dto */
+        $dto = $this->serializer->deserialize($request->getContent(), StudentCreateDTO::class, 'json');
+
         $item = $this->service->add($dto);
 
         return $this->json($item);
@@ -56,8 +62,9 @@ class StudentController extends AbstractController
      */
     public function update(Request $request, int $id)
     {
-        $data = json_decode($request->getContent(), true);
-        $dto = new StudentCreateDTO($data['name'],$data['email'],$data['password']);
+        /** @var StudentCreateDTO $dto */
+        $dto = $this->serializer->deserialize($request->getContent(), StudentCreateDTO::class, 'json');
+
         $item = $this->service->update($id, $dto);
 
         return $this->json($item);

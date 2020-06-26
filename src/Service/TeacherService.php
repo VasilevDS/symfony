@@ -51,11 +51,7 @@ class TeacherService
         $user = $this->userService->createOrUpdate($DTO);
         $teacher = new Teacher();
         $teacher->setUser($user);
-        foreach ($DTO->getThemes() as $idTheme)
-        {
-            $theme = $this->themeRepository->find($idTheme);
-            $teacher->addTheme($theme);
-        }
+        $teacher = $this->addThemesToTeacher($teacher, $DTO->getThemes());
 
         $this->manager->persist($teacher);
         $this->manager->flush();
@@ -82,12 +78,7 @@ class TeacherService
         $user = $teacher->getUser();
         $user = $this->userService->createOrUpdate($DTO, $user);
         $teacher->setUser($user);
-        $teacher->getThemes()->clear();
-        foreach ($DTO->getThemes() as $idTheme)
-        {
-            $theme = $this->themeRepository->find($idTheme);
-            $teacher->addTheme($theme);
-        }
+        $teacher = $this->addThemesToTeacher($teacher, $DTO->getThemes());
 
         $this->manager->persist($teacher);
         $this->manager->flush();
@@ -104,5 +95,19 @@ class TeacherService
         $this->manager->remove($teacher);
         $this->manager->flush();
         return ['status' => "teacher[id: $id] deleted"];
+    }
+
+    public function addThemesToTeacher(Teacher $teacher, array $themes) :Teacher
+    {
+        $teacher->getThemes()->clear();
+        foreach ($themes as $idTheme)
+        {
+            $theme = $this->themeRepository->find($idTheme);
+            if($theme === null) {
+                throw new EntityNotFoundException("theme not found [id: $idTheme]");
+            }
+            $teacher->addTheme($theme);
+        }
+        return $teacher;
     }
 }

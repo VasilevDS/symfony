@@ -4,13 +4,26 @@
 namespace App\DTO\User;
 
 use App\Enum\RoleType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class TeacherCreateDTO implements UserCreateDTOInterface
 {
+    /**
+     * @Assert\Length(min=2, max=255)
+     * @Assert\Type("string")
+     */
     private String $name;
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
     private String $email;
     private array $roles;
+    /**
+     * @Assert\Length(min=8, max=255)
+     */
     private String $password;
+
     private array $themes;
 
     public function __construct(string $name, string $email, string $password, array $themes)

@@ -6,21 +6,25 @@ namespace App\Controller;
 
 use App\DTO\Event\FreetimeCreateDTO;
 use App\Service\FreetimeService;
-use DateTime;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class FreetimeController extends AbstractController
 {
     private FreetimeService $service;
+    /**
+     * @var SerializerInterface
+     */
+    private SerializerInterface $serializer;
 
-    public function __construct(FreetimeService $service)
+    public function __construct(FreetimeService $service, SerializerInterface $serializer)
     {
         $this->service = $service;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -38,15 +42,11 @@ class FreetimeController extends AbstractController
      */
     public function store(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
-        $dto = new FreetimeCreateDTO(
-            $data['id_teacher'],
-            new DateTime($data['date_from']),
-            new DateTime($data['date_to'])
-        );
+        /** @var FreetimeCreateDTO $dto */
+        $dto = $this->serializer->deserialize($request->getContent(), FreetimeCreateDTO::class, 'json');
         $item = $this->service->add($dto);
 
-        return new JsonResponse($item);
+        return $this->json($item);
     }
 
     /**
@@ -65,15 +65,11 @@ class FreetimeController extends AbstractController
      */
     public function update(Request $request, int $id)
     {
-        $data = json_decode($request->getContent(), true);
-        $dto = new FreetimeCreateDTO(
-            $data['id_teacher'],
-            new DateTime($data['date_from']),
-            new DateTime($data['date_to'])
-        );
+        /** @var FreetimeCreateDTO $dto */
+        $dto = $this->serializer->deserialize($request->getContent(), FreetimeCreateDTO::class, 'json');
         $item = $this->service->update($id, $dto);
 
-        return new JsonResponse($item);
+        return $this->json($item);
     }
 
     /**

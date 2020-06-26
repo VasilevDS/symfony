@@ -8,14 +8,23 @@ use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TeacherController extends AbstractController
 {
     private TeacherService $service;
+    private SerializerInterface $serializer;
+    /**
+     * @var ValidatorInterface
+     */
+    private ValidatorInterface $validator;
 
-    public function __construct(TeacherService $service)
+    public function __construct(TeacherService $service, SerializerInterface $serializer, ValidatorInterface $validator)
     {
         $this->service = $service;
+        $this->serializer = $serializer;
+        $this->validator = $validator;
     }
 
 
@@ -33,8 +42,8 @@ class TeacherController extends AbstractController
      */
     public function store(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
-        $dto = new TeacherCreateDTO($data['name'],$data['email'],$data['password'],$data['themes']);
+        /** @var TeacherCreateDTO $dto */
+        $dto = $this->serializer->deserialize($request->getContent(), TeacherCreateDTO::class, 'json');
         $item = $this->service->add($dto);
 
         return $this->json($item);
@@ -56,8 +65,8 @@ class TeacherController extends AbstractController
      */
     public function update(Request $request, int $id)
     {
-        $data = json_decode($request->getContent(), true);
-        $dto = new TeacherCreateDTO($data['name'],$data['email'],$data['password'],$data['themes']);
+        /** @var TeacherCreateDTO $dto */
+        $dto = $this->serializer->deserialize($request->getContent(), TeacherCreateDTO::class, 'json');
         $item = $this->service->update($id, $dto);
 
         return $this->json($item);
