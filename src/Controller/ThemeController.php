@@ -8,22 +8,15 @@ use App\DTO\Request\ThemeCreateDTO;
 use App\Service\ThemeService;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class ThemeController extends AbstractController
 {
     private ThemeService $service;
-    /**
-     * @var SerializerInterface
-     */
-    private SerializerInterface $serializer;
 
-    public function __construct(ThemeService $service, SerializerInterface $serializer)
+    public function __construct(ThemeService $service)
     {
         $this->service = $service;
-        $this->serializer = $serializer;
     }
 
     /**
@@ -38,12 +31,9 @@ class ThemeController extends AbstractController
     /**
      * @Route("/theme", methods="POST")
      */
-    public function store(Request $request)
+    public function store(ThemeCreateDTO $DTO)
     {
-        /** @var ThemeCreateDTO $dto */
-        $dto = $this->serializer->deserialize($request->getContent(), ThemeCreateDTO::class, 'json');
-        $item = $this->service->add($dto);
-
+        $item = $this->service->add($DTO);
         return $this->json($item);
     }
 
@@ -61,12 +51,9 @@ class ThemeController extends AbstractController
      * @Route("/theme/{id}", methods="PUT")
      * @throws EntityNotFoundException
      */
-    public function update(Request $request, int $id)
+    public function update(ThemeCreateDTO $DTO, int $id)
     {
-        /** @var ThemeCreateDTO $dto */
-        $dto = $this->serializer->deserialize($request->getContent(), ThemeCreateDTO::class, 'json');
-        $item = $this->service->update($id, $dto);
-
+        $item = $this->service->update($id, $DTO);
         return $this->json($item);
     }
 

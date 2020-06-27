@@ -9,22 +9,15 @@ use App\Service\FreetimeService;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class FreetimeController extends AbstractController
 {
     private FreetimeService $service;
-    /**
-     * @var SerializerInterface
-     */
-    private SerializerInterface $serializer;
 
-    public function __construct(FreetimeService $service, SerializerInterface $serializer)
+    public function __construct(FreetimeService $service)
     {
         $this->service = $service;
-        $this->serializer = $serializer;
     }
 
     /**
@@ -40,12 +33,9 @@ class FreetimeController extends AbstractController
      * @Route("/freetime", methods="POST")
      * @throws Exception
      */
-    public function store(Request $request)
+    public function store(FreetimeCreateDTO $DTO)
     {
-        /** @var FreetimeCreateDTO $dto */
-        $dto = $this->serializer->deserialize($request->getContent(), FreetimeCreateDTO::class, 'json');
-        $item = $this->service->add($dto);
-
+        $item = $this->service->add($DTO);
         return $this->json($item);
     }
 
@@ -63,12 +53,9 @@ class FreetimeController extends AbstractController
      * @Route("/freetime/{id}", methods="PUT")
      * @throws Exception
      */
-    public function update(Request $request, int $id)
+    public function update(FreetimeCreateDTO $DTO, int $id)
     {
-        /** @var FreetimeCreateDTO $dto */
-        $dto = $this->serializer->deserialize($request->getContent(), FreetimeCreateDTO::class, 'json');
-        $item = $this->service->update($id, $dto);
-
+        $item = $this->service->update($id, $DTO);
         return $this->json($item);
     }
 

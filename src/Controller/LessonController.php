@@ -9,7 +9,6 @@ use App\Service\LessonService;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -40,12 +39,9 @@ class LessonController extends AbstractController
      * @Route("/lesson", methods="POST")
      * @throws Exception
      */
-    public function store(Request $request)
+    public function store(LessonCreateDTO $DTO)
     {
-        /** @var LessonCreateDTO $dto */
-        $dto = $this->serializer->deserialize($request->getContent(), LessonCreateDTO::class, 'json');
-        $item = $this->service->add($dto);
-
+        $item = $this->service->add($DTO);
         return $this->json($item);
     }
 
@@ -64,12 +60,9 @@ class LessonController extends AbstractController
      * @throws EntityNotFoundException
      * @throws Exception
      */
-    public function update(Request $request, int $id)
+    public function update(LessonCreateDTO $DTO, int $id)
     {
-        /** @var LessonCreateDTO $dto */
-        $dto = $this->serializer->deserialize($request->getContent(), LessonCreateDTO::class, 'json');
-        $item = $this->service->update($id, $dto);
-
+        $item = $this->service->update($id, $DTO);
         return $this->json($item);
     }
 

@@ -7,21 +7,16 @@ use App\DTO\Request\User\StudentCreateDTO;
 use App\Service\StudentService;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 
 class StudentController extends AbstractController
 {
     private StudentService $service;
-    private SerializerInterface $serializer;
 
-    public function __construct(StudentService $service, SerializerInterface $serializer
-    )
+    public function __construct(StudentService $service)
     {
         $this->service = $service;
-        $this->serializer = $serializer;
     }
 
 
@@ -30,20 +25,16 @@ class StudentController extends AbstractController
      */
     public function index()
     {
-        $Studentdata = $this->service->getAll();
-        return $this->json($Studentdata);
+        $StudentData = $this->service->getAll();
+        return $this->json($StudentData);
     }
 
     /**
      * @Route("/student", methods="POST")
      */
-    public function store(Request $request)
+    public function store(StudentCreateDTO $DTO)
     {
-        /** @var StudentCreateDTO $dto */
-        $dto = $this->serializer->deserialize($request->getContent(), StudentCreateDTO::class, 'json');
-
-        $item = $this->service->add($dto);
-
+        $item = $this->service->add($DTO);
         return $this->json($item);
     }
 
@@ -61,13 +52,9 @@ class StudentController extends AbstractController
      * @Route("/student/{id}", methods="PUT")
      * @throws EntityNotFoundException
      */
-    public function update(Request $request, int $id)
+    public function update(StudentCreateDTO $DTO, int $id)
     {
-        /** @var StudentCreateDTO $dto */
-        $dto = $this->serializer->deserialize($request->getContent(), StudentCreateDTO::class, 'json');
-
-        $item = $this->service->update($id, $dto);
-
+        $item = $this->service->update($id, $DTO);
         return $this->json($item);
     }
 
