@@ -25,12 +25,13 @@ abstract class BaseDTOResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument)
     {
-        return self::TYPE === $argument->getType();
+
+        return static::TYPE === $argument->getType();
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
-        $dto = $this->serializer->deserialize($request->getContent(), self::TYPE, 'json');
+        $dto = $this->serializer->deserialize($request->getContent(), static::TYPE, 'json');
 
         $errors = $this->validator->validate($dto);
         if (count($errors) > 0) {

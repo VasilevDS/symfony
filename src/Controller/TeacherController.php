@@ -6,25 +6,15 @@ use App\DTO\Request\User\TeacherCreateDTO;
 use App\Service\TeacherService;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TeacherController extends AbstractController
 {
     private TeacherService $service;
-    private SerializerInterface $serializer;
-    /**
-     * @var ValidatorInterface
-     */
-    private ValidatorInterface $validator;
 
-    public function __construct(TeacherService $service, SerializerInterface $serializer, ValidatorInterface $validator)
+    public function __construct(TeacherService $service)
     {
         $this->service = $service;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
     }
 
 
@@ -40,16 +30,9 @@ class TeacherController extends AbstractController
     /**
      * @Route("/teacher", methods="POST")
      */
-    public function store(Request $request)
+    public function store(TeacherCreateDTO $DTO)
     {
-        /** @var TeacherCreateDTO $dto */
-        $dto = $this->serializer->deserialize($request->getContent(), TeacherCreateDTO::class, 'json');
-        $errors = $this->validator->validate($dto);
-        if (count($errors) > 0) {
-            return  $this->json(['errors' => $errors,]);
-        }
-        $item = $this->service->add($dto);
-
+        $item = $this->service->add($DTO);
         return $this->json($item);
     }
 
@@ -67,12 +50,9 @@ class TeacherController extends AbstractController
      * @Route("/teacher/{id}", methods="PUT")
      * @throws EntityNotFoundException
      */
-    public function update(Request $request, int $id)
+    public function update(TeacherCreateDTO $DTO, int $id)
     {
-        /** @var TeacherCreateDTO $dto */
-        $dto = $this->serializer->deserialize($request->getContent(), TeacherCreateDTO::class, 'json');
-        $item = $this->service->update($id, $dto);
-
+        $item = $this->service->update($id, $DTO);
         return $this->json($item);
     }
 

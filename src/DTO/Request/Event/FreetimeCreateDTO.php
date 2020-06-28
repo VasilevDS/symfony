@@ -6,18 +6,11 @@ namespace App\DTO\Request\Event;
 
 use App\Enum\EventType;
 use DateTime;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class FreetimeCreateDTO implements EventCreateDTOInterface
 {
     private int $teacherId;
-    /**
-     * @Assert\DateTime()
-     */
     private DateTime $dateFrom;
-    /**
-     * @Assert\DateTime()
-     */
     private DateTime $dateTo;
     private string $type;
 

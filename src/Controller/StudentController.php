@@ -34,7 +34,6 @@ class StudentController extends AbstractController
      */
     public function store(StudentCreateDTO $DTO)
     {
-        dd($DTO);
         $item = $this->service->add($DTO);
         return $this->json($item);
     }
@@ -55,7 +54,6 @@ class StudentController extends AbstractController
      */
     public function update(StudentCreateDTO $DTO, int $id)
     {
-        dd($DTO);
         $item = $this->service->update($id, $DTO);
         return $this->json($item);
     }
